@@ -1,0 +1,292 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<style>
+body{
+	padding:20px;
+}
+</style>
+<script>
+$(document).ready(function () {
+
+    //alert(" on pageload");
+
+    var countriesURL = "https://restcountries.com/v3.1/all" ;
+    $.ajax({
+
+        type: "GET",
+        url: countriesURL,
+        success: function(result) {  
+           // console.log(result);
+
+            //$("#showCountires").val=result;
+
+          //  document.getElementById("showCountires").innerHTML=result[0].name.common;
+
+
+            var len = result.length;
+            var txt = "";
+            if(len > 0){
+                for(var i=0;i<len;i++){
+                    var countryName = result[i].name.common ;
+                   console.log(countryName );
+                        txt += "<tr><td>"+ result[i].name.common +"</td>"
+                            +"<td>"+result[i].name.official+"</td>"
+                                          +"<td>"+result[i].capital+"</td><td>"
+                                          +result[i].car.side+"</td>"
+                                          +"<td> <img src='"+result[i].flags.png+"' width='40' height='40' > </img></td>"
+                                             
+                                          +"<td> <input type='button' value='View'   onclick=\"onViewButton('"+result[i].name.common +"') ;\" /> </td> </tr>";
+                   
+                }
+                if(txt != ""){
+                    $("#table").append(txt);
+                }
+            }
+        },
+        error: function(ramError) {  
+
+        }
+
+    });
+
+
+    $("#search").click(function(){
+        var con = $("#country").val();
+
+        console.log(con);
+
+        var conByNameURL = "https://restcountries.com/v3.1/name/"+con ;
+
+        $("#table").empty();
+
+        $.ajax({
+
+            type: "GET",
+            url: conByNameURL,
+            success: function(result) {  
+                console.log(result);
+    
+                //$("#showCountires").val=result;
+    
+              //  document.getElementById("showCountires").innerHTML=result[0].name.common;
+    
+    
+                var len = result.length;
+                var txt = " <tr>  <th>Country</th>  <th>Offical Name</th><th>Capital</th> <th>Car Signs</th> <th>Flag</th> <th>View</th> </tr>";
+             
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+                       
+                        var countryName = result[i].name.common ;
+                            txt += "<tr><td>"+ result[i].name.common +"</td>"
+                                +"<td>"+result[i].name.official+"</td>"
+                                              +"<td>"+result[i].capital+"</td>"
+                                                +"<td>"+result[i].car.side+"</td>"
+                                                +"<td> <img src='"+result[i].flags.png+"' width='40' height='40' > </img></td>"
+                                               
+                                                +"<td> <input type='button' value='View'   onclick=\"onViewButton('"+result[i].name.common +"') ;\" /> </td> </tr>";
+                   
+                    }
+                    if(txt != ""){
+                        $("#table").append(txt);
+                    }
+                }
+            },
+            error: function(ramError) {  
+    
+            }
+    
+        });
+
+
+    });
+
+
+
+
+    $("#searchByFullName").click(function(){
+        var con = $("#country").val();
+
+        console.log(con);
+
+        var conByNameURL = "https://restcountries.com/v3.1/name/"+con+"?fullText=true" ;
+
+        $("#table").empty();
+
+        $.ajax({
+
+            type: "GET",
+            url: conByNameURL,
+            success: function(result) {  
+                console.log(result);
+    
+                //$("#showCountires").val=result;
+    
+              //  document.getElementById("showCountires").innerHTML=result[0].name.common;
+    
+    
+                var len = result.length;
+                var txt = " <tr>  <th>Country</th>  <th>Offical Name</th><th>Capital</th> <th>Car Signs</th> <th>Flag</th> <th>View</th> </tr>";
+             
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+                       
+                            txt += "<tr><td>"+ result[i].name.common +"</td>"
+                                +"<td>"+result[i].name.official+"</td>"
+                                              +"<td>"+result[i].capital+"</td>"
+                                                +"<td>"+result[i].car.side+"</td>"
+                                                +"<td> <img src='"+result[i].flags.png+"' width='40' height='40' > </img></td>"
+                                                +"<td> <input type='button' value='View'   onclick=\"onViewButton('"+result[i].name.common +"') ;\" /> </td> </tr>";
+                   
+                    }
+                    if(txt != ""){
+                        $("#table").append(txt);
+                    }
+                }
+            },
+            error: function(ramError) {  
+    
+            }
+    
+        });
+
+
+        //search by capital********************************************
+        $("#searchByCapital").click(function(){
+            alert(" Iam tpstaies------");
+            var capital = $("#capital").val();
+    
+            console.log(capital);
+    
+            var conByNameURL = "https://restcountries.com/v3.1/capital/"+capital ;
+    
+            $("#table").empty();
+    
+           alert(capital);
+    
+        });
+
+
+
+
+        //*******************************************************************
+
+    });
+
+
+})
+</script>
+<script>
+
+    function onViewButton(con){
+
+        //alert("Iam on onviewbutton"+con);
+
+        var conByNameURL = "https://restcountries.com/v3.1/name/"+con +"?fullText=true" ;
+
+        $("#modal-table").empty();
+
+        $.ajax({
+
+            type: "GET",
+            url: conByNameURL,
+            success: function(result) {  
+                console.log(result);
+    
+                //$("#showCountires").val=result;
+    
+              //  document.getElementById("showCountires").innerHTML=result[0].name.common;
+              $('#Mymodal').modal('show')
+    
+                var len = result.length;
+                var txt = " <tr>  <th>Country</th>  <th>Offical Name</th><th>Capital</th> <th>Car Signs</th> <th>Flag</th> <th>View</th> </tr>";
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+                       
+                        var countryName = result[i].name.common ;
+                            txt += "<tr><td>"+ result[i].name.common +"</td>"
+                                +"<td>"+result[i].name.official+"</td>"
+                                              +"<td>"+result[i].capital+"</td>"
+                                                +"<td>"+result[i].car.side+"</td>"
+                                                +"<td> <img src='"+result[i].flags.png+"' width='40' height='40' > </img></td>"
+                                                +"<td> <input type='button' value='View'   onclick=\"onViewButton('"+result[i].name.common +"') ;\" /> </td> </tr>";
+                        
+                    }
+                    if(txt != ""){
+                        $("#modal-table").append(txt);
+                    }
+                }
+            },
+            error: function(ramError) {  
+    
+            }
+    
+        });
+    }
+</script>
+
+
+</head>
+
+
+<body>
+     <!--        +"<td>   <iframe src=' https://www.google.com/maps/place/Afghanistan/@33.9340384,67.7034312,6z/data=!3m1!4b1!4m5!3m4!1s0x38d16eb6f8ff026d:0xf3b5460dbe96da78!8m2!3d33.93911!4d67.709953'     width='400'   height='300'       frameborder='0'      style='border:0;'    allowfullscreen=''                                                        aria-hidden='false'                                                        tabindex='0'>           </iframe> </td>"  --> 
+                                
+
+    <input type="text" name="country" id ="country" />
+    <input type="button" id="search" value="Search" />
+    <input type="button" id="searchByFullName" value="SearchByFullName" />
+
+    <input type="text" name="capital" id ="capital" />
+    <input type="button" id="searchByCapital" value="SearchByCapital" />
+
+
+
+  <div id ="showCountires" >
+
+
+  </div>
+
+  <table id="table"  border="2">
+    <tr>
+        <th>Country</th>
+        <th>Offical Name</th>
+        <th>Capital</th>
+        <th>Car Signs</th>
+        <th>Flag</th>
+        <th>View</th>
+    </tr>
+</table>
+
+
+<div class="container">
+	
+	<!-- .modal -->
+	<div class="modal fade" id="Mymodal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">×</button> 
+					<h4 class="modal-title">Country Detail View</h4>                                                             
+				</div> 
+				<div class="modal-body">
+					<table id="modal-table"  border="2">
+                        </table>
+				</div>   
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>                               
+				</div>
+			</div>                                                                       
+		</div>                                          
+	</div>
+</div>
+
+</body>
+
+
+</html>

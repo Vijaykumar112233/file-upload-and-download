@@ -1,0 +1,198 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <style>
+body{
+	padding:20px;
+}
+</style>
+    <script>
+$(document).ready(function () {
+
+    //alert(" on pageload");
+
+    var countriesURL = "http://localhost:8080/getAllMusicFiles" ;
+    $.ajax({
+
+        type: "GET",
+        url: countriesURL,
+        success: function(result) {
+            console.log(result);
+
+          var len = result.length;
+            var txt = "";
+            if(len > 0){
+                for(var i=0;i<len;i++){
+                    var id = result[i].id ;
+                    var name = encodeURI(result[i].fileName) ;
+                   console.log(id );
+                        txt += "<tr><td>"+ id +"</td>"
+                            +"<td>"+name+"</td>"
+
+                           +"<td>  <a href='http://localhost:8080/downloadFile/id/"+id+"' > Download </a></td>"
+                            +"<td> <audio id='4' controls>    <source src='http://localhost:8080/downloadFile/id/"+id+"'> </audio> </td> </tr>";
+
+                    }
+                if(txt != ""){
+                    $("#table").append(txt);
+                }
+            }
+
+
+
+        },
+        error: function(ramError) {
+
+        }
+
+    });
+
+
+    $("#search").click(function(){
+        var musicFileName = $("#country").val();
+
+        console.log(musicFileName);
+
+
+        var musicByFile = "http://localhost:8080/getMusicFile/name/"+musicFileName ;
+        $("#table").empty();
+
+        $.ajax({
+
+            type: "GET",
+            url: musicByFile,
+            success: function(result) {
+                console.log(result);
+
+                //$("#showCountires").val=result;
+
+              //  document.getElementById("showCountires").innerHTML=result[0].name.common;
+
+
+                var len = result.length;
+                var txt = " <tr>  <th>Country</th>  <th>id</th><th>Name</th> <th>view</th>  </tr>";
+
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+
+                     var id = result[i].id ;
+                     var name = encodeURI(result[i].fileName) ;
+
+                        txt += "<tr><td>"+ id +"</td>"
+                            +"<td>"+name+"</td>"
+                           +"<td>  <a href='http://localhost:8080/downloadFile/id/"+id+"' > Download </a></td>"
+                            +"<td> <audio id='4' controls>    <source src='http://localhost:8080/downloadFile/id/"+id+"'> </audio> </td> </tr>";
+
+                    }
+                    if(txt != ""){
+                        $("#table").append(txt);
+                    }
+                }
+            },
+            error: function(ramError) {
+
+            }
+
+        });
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+})
+</script>
+    <script>
+
+    function onViewButton(con){
+
+        //alert("Iam on onviewbutton"+con);
+
+       var musicByFile = "http://localhost:8080/getMusicFile/"+con ;
+
+
+        $("#modal-table").empty();
+
+          $.ajax({
+
+            type: "GET",
+            url: musicByFile,
+            success: function(result) {
+                console.log(result);
+
+                var len = result.length;
+                var txt = " <tr>  <th>Country</th>  <th>id</th><th>Name</th><th>Download</th> <th>Listen</th>  </tr>";
+
+                if(len > 0){
+                    for(var i=0;i<len;i++){
+
+                     var id = result[i].id ;
+                    var name = result[i].fileName ;
+
+                        txt += "<tr><td>"+ id +"</td>"
+                            +"<tr><td>"+ name +"</td>"
+                             +"<td>  <a href='http://localhost:8080/downloadFile/id/"+id+"' > Download </a></td>"
+                            +"<td> <audio id='4' controls>    <source src='http://localhost:8080/downloadFile/id/"+id+"'> </audio> </td> </tr>";
+
+                    }
+                    if(txt != ""){
+                        $("#table").append(txt);
+                    }
+                }
+            },
+            error: function(ramError) {
+
+            }
+
+        });
+
+    }
+</script>
+
+
+</head>
+
+
+<body>
+<!--        +"<td>   <iframe src=' https://www.google.com/maps/place/Afghanistan/@33.9340384,67.7034312,6z/data=!3m1!4b1!4m5!3m4!1s0x38d16eb6f8ff026d:0xf3b5460dbe96da78!8m2!3d33.93911!4d67.709953'     width='400'   height='300'       frameborder='0'      style='border:0;'    allowfullscreen=''                                                        aria-hidden='false'                                                        tabindex='0'>           </iframe> </td>"  -->
+
+
+<input type="text" name="country" id ="country" />
+<input type="button" id="search" value="Search" />
+
+
+
+
+<div id ="showCountires" >
+
+
+</div>
+
+<table id="table"  border="2">
+    <tr>
+        <th>id</th>
+        <th>Name</th>
+        <th>Download</th>
+        <th>Listen</th>
+    </tr>
+</table>
+
+
+
+
+</body>
+
+
+</html>
